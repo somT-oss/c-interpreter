@@ -58,7 +58,7 @@ int main() {
         .readPosition = 0
     };
 
-    for (int i = 0; i <= input_length; i ++) {
+    for (int i = 0; i < input_length; i ++) {
         readChar(&lexer);
         printf("Current char: %c \n", lexer.character);
     }
