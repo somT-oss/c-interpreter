@@ -45,13 +45,6 @@ int main() {
         return 1;
     }
 
-    for (int i = 0; i < (int)(sizeof(input)/sizeof(input[0])) - 1 ; i ++) {
-        if (input[i] != token_type_arr[i][0]) {
-            printf("Invalid token at position %d\n", i);
-            return 1;
-        }
-    }
-
     struct Lexer lexer = {
         .input = input,
         .position = 0,
@@ -59,9 +52,21 @@ int main() {
     };
 
     for (int i = 0; i < input_length; i ++) {
-        readChar(&lexer);
+        readChar(&lexer); // Read each character.
         printf("Current char: %c \n", lexer.character);
+
+        if (lexer.character != token_type_arr[i][0]) {
+            printf("Invalid token at position %d\n", i);
+            return 1;
+        }
     }
+
+    // for (int i = 0; i < (int)(sizeof(input)/sizeof(input[0])) - 1 ; i ++) {
+    //     if (input[i] != token_type_arr[i][0]) {
+        
+    //     }
+    // }
+
 
     return 0;
 }
