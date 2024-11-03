@@ -1,14 +1,14 @@
 #include "tokens.h"
 #include <stdio.h>
 
-struct Lexer {
+typedef struct {
     char *input;
     int position;
     int readPosition;
     char character;
-};
+}  Lexer;
 
-void readChar(struct Lexer *lexer) {
+void readChar(Lexer *lexer) {
     int input_length = (int) (sizeof(&lexer->input)/sizeof(lexer->input[0])); // Get length of input in Lexer struct
     if (lexer->readPosition >= input_length) { // Check if the curr position of the input string on the lexer is greater than the length of the input string 
         lexer->character = 0; // If so, reset character to the begining.
@@ -45,10 +45,10 @@ int main() {
         return 1;
     }
 
-    struct Lexer lexer = {
-        .input = input,
-        .position = 0,
-        .readPosition = 0
+    Lexer lexer = {
+     input,
+      0,
+      0
     };
 
     for (int i = 0; i < input_length; i ++) {
@@ -60,13 +60,5 @@ int main() {
             return 1;
         }
     }
-
-    // for (int i = 0; i < (int)(sizeof(input)/sizeof(input[0])) - 1 ; i ++) {
-    //     if (input[i] != token_type_arr[i][0]) {
-        
-    //     }
-    // }
-
-
     return 0;
 }
