@@ -16,7 +16,7 @@ int main() {
     
     TokenType token_type_arr[] = {ASSIGN, PLUS, LPAREN, RPAREN, LBRACE, RBRACE, COMMA, COLON, END_OF_LINE};
 
-    int input_length = (int)(sizeof(input)/sizeof(input[0])); // Minus 1 for the escape character '\0'
+    int input_length = (int)(sizeof(input)/sizeof(input[0])); // Removed the minus 1 and added EOF TokenType
     int token_type_arr_length = (int)(sizeof(token_type_arr)/sizeof(token_type_arr[0]));
 
     if (input_length != token_type_arr_length) {
