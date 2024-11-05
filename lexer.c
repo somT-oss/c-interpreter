@@ -1,5 +1,10 @@
 #include "tokens.h"
+#include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+char input[] = "let x = 5 + 5";
+int input_length = (int)(sizeof(input)/sizeof(input[0]));
 
 typedef struct {
     char *input;
@@ -9,7 +14,8 @@ typedef struct {
 }  Lexer;
 
 void readChar(Lexer *lexer) {
-    int input_length = (int) (sizeof(&lexer->input)/sizeof(lexer->input[0])); // Get length of input in Lexer struct
+    // printf("%d\n", (int)(sizeof(&lexer->input)));
+    // int input_length = (int) (sizeof(&lexer->input)/sizeof(lexer->input[0])); // Get length of input in Lexer struct
     if (lexer->readPosition >= input_length) { // Check if the curr position of the input string on the lexer is greater than the length of the input string 
         lexer->character = 0; // If so, reset character to the begining.
     } else {
@@ -19,9 +25,7 @@ void readChar(Lexer *lexer) {
     lexer->readPosition += 1; // Move the character position to be read one step further
 }  
 
-
 int main() {
-    char input[] = "=+(){},;";
     
     TokenType ASSIGN = "="; 
     TokenType PLUS = "+"; 
@@ -33,17 +37,8 @@ int main() {
     TokenType COLON = ";"; 
     TokenType END_OF_LINE = ""; 
     
-    TokenType token_type_arr[] = {ASSIGN, PLUS, LPAREN, RPAREN, LBRACE, RBRACE, COMMA, COLON, END_OF_LINE};
+     // Removed the minus 1 and added EOF TokenType
 
-    int input_length = (int)(sizeof(input)/sizeof(input[0])); // Removed the minus 1 and added EOF TokenType
-    int token_type_arr_length = (int)(sizeof(token_type_arr)/sizeof(token_type_arr[0]));
-
-    if (input_length != token_type_arr_length) {
-        printf("Invalid length for both input and token type arr\n");
-        printf("input arr len: %d\n", input_length);
-        printf("toke type arr len: %d\n", token_type_arr_length);
-        return 1;
-    }
 
     Lexer lexer = {
      input,
@@ -51,14 +46,33 @@ int main() {
       0
     };
 
-    for (int i = 0; i < input_length; i ++) {
-        readChar(&lexer); // Read each character.
-        printf("Current char: %c \n", lexer.character);
+    int iterator = 0;
+    char *token_buffer;
+    int token_buffer_size = 1;
+    int token_counter = 0;
+    int space_counter = 0;
 
-        if (lexer.character != token_type_arr[i][0]) {
-            printf("Invalid token at position %d\n", i);
-            return 1;
+    while (iterator <= input_length) { // Iterate till '\0'
+        readChar(&lexer); // Keep reading characters
+        if (isspace(lexer.character) ) { // check if a character is a space
+            token_buffer[token_counter] = '\0'; // Null-terminate the token
+            printf("%s\n", token_buffer); // Print the current token
+            token_counter = 0; // Reset token counter for the next token 
+        }else { 
+                if (token_counter >= token_buffer_size - 1) { 
+                token_buffer_size *= 2; // update buffer size
+                char *temp = realloc(token_buffer, token_buffer_size); // reallocate memory based on the new buffer size 
+                if (temp == NULL) { 
+                    free(token_buffer);
+                    printf("Memory allocation failed\n"); // handle memeory allocation error
+                    return 1;
+                }
+                token_buffer = temp; // update the pointer with the newly allocated buffer space
+            }
+            token_buffer[token_counter] = lexer.character; // add the character to token_buffer
+            token_counter ++; // move token_counter
         }
+        iterator ++; // always iterate through the string
     }
     return 0;
 }
