@@ -58,28 +58,36 @@ void insert(HashTable *table, char *key, char *value) {
     table->buckets[computed_hash] = node; // 
 }
 
+// Implemented this without looking at GPT LFG🚀🚀
+int search(HashTable *table, char *key) {
+    unsigned int index = hash_function(key);
+    HashNode *node = table->buckets[index];
+    
+    if (!node) {
+        printf("key %s not found \n", key);
+        return 1;
+    } else {
+        printf("found key at index %d\n", index);
+        printf("{%s:%s} \n", node->key, node->value);
+        return 0;
+    }
+}
+
 int main() {
     printf("This is my custom implementation of a hashtable\n");
     HashTable *my_hashtable = create_hashtable(); // create a hashtable
     insert(my_hashtable, "somto", "10"); // insert the values {"somto": "23"}
     insert(my_hashtable, "chibueze", "9"); // insert the values {"chibueze": "25"}
-    for (int i = 0; i < HASHTABLE_SIZE; i ++) { // loop through the size of the hashtable
-        HashNode *node = my_hashtable->buckets[i];  // get the node at the ith position
-        if (node == NULL) {
-            printf("index: %d \n", i);
-        } else {
-            while (node != NULL) { // while the node is not null
-            printf("index: %d -> {%s:%s}\n", i, node->key, node->value); // print the key of the node somto:23
-            node = node->next_node; // set the node to node.next
-        }
-            // printf("index %d ", i);
-            // printf("{'%s:%s}\n", node->key, node->value);
-        }
-        
-    }
-
-
-    // printf("%d\n", hash_function("somto"));
-    // printf("%d\n", hash_function("david"));
-    // printf("%d\n", hash_function("uchegbu"));
+    search(my_hashtable, "chibueze");
+    // for (int i = 0; i < HASHTABLE_SIZE; i ++) { // loop through the size of the hashtable
+    //     HashNode *node = my_hashtable->buckets[i];  // get the node at the ith position
+    //     if (node == NULL) {
+    //         printf("index: %d \n", i);
+    //     } else {
+    //         while (node != NULL) { // while the node is not null
+    //             printf("index: %d -> {%s:%s}\n", i, node->key, node->value); // print the key of the node somto:23
+    //             node = node->next_node; // set the node to node.next
+    //         }
+    //     }
+    // }
 }
