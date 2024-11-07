@@ -35,17 +35,6 @@ HashTable *create_hashtable() {
     return table;
 }
 
-// My implementation
-/* void insert(HashTable *table, char *key, char *value){
-    unsigned int computed_hash = hash_function(key);
-    HashNode key_value = {
-        key = key,
-        value=value
-    };
-    table->buckets = key_value; 
-} 
-*/
-
 // ChatGPT Implementation
 void insert(HashTable *table, char *key, char *value) {
     unsigned int computed_hash = hash_function(key); // compute the hash for the key of the key:value you want to store in the hashtable
@@ -73,11 +62,31 @@ int search(HashTable *table, char *key) {
     }
 }
 
+
+// Implemented this without looking at GPT LFG🚀🚀
+int delete(HashTable *table, char *key) {
+    unsigned int index = hash_function(key);
+    HashNode *node = table->buckets[index];
+
+    if (!node) {
+        printf("key %s not found \n", key);
+        return 1;
+    } else {
+        node->key = NULL;
+        node->value = NULL;
+        node->next_node = NULL;
+        printf("deleted data at index %d", index);
+        return 0;
+    }
+}
+
 int main() {
     printf("This is my custom implementation of a hashtable\n");
     HashTable *my_hashtable = create_hashtable(); // create a hashtable
     insert(my_hashtable, "somto", "10"); // insert the values {"somto": "23"}
     insert(my_hashtable, "chibueze", "9"); // insert the values {"chibueze": "25"}
+    search(my_hashtable, "chibueze");
+    delete(my_hashtable, "chibueze");
     search(my_hashtable, "chibueze");
     // for (int i = 0; i < HASHTABLE_SIZE; i ++) { // loop through the size of the hashtable
     //     HashNode *node = my_hashtable->buckets[i];  // get the node at the ith position
