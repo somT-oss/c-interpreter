@@ -37,6 +37,7 @@ HashTable *create_hashtable() {
     return table;
 }
 
+// modified ChatGPT Implementation
 void insert(HashTable *table, char *key, char *value) {
     unsigned int index = hash_function(key); // compute the hash for the key of the key:value you want to store in the hashtable
     HashNode *existing_node = table->buckets[index];
@@ -44,7 +45,7 @@ void insert(HashTable *table, char *key, char *value) {
     if (existing_node != NULL) {
         char *node_key = existing_node->key;
         if(strcmp(node_key, key) == 0) {
-            printf("key %s already exists at index %d\n", key, index);
+            printf("key %s already exists at index %d\n", key, index); // checks if a key exists and does not allow addition of that same key
             return;
         }
     } else {
