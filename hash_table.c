@@ -28,23 +28,20 @@ unsigned int hash_function(char *key) {
 
 HashTable *create_hashtable() {
     HashTable *table = malloc(sizeof(HashTable));
-    table->buckets = malloc(sizeof(HashNode*) * HASHTABLE_SIZE); // allocate memory for a DS (pointer to a HashNode) * HASHTABLE_SIZE
+    table->buckets = malloc(sizeof(HashNode*) * HASHTABLE_SIZE);
     for (int i = 0; i < HASHTABLE_SIZE; i++) {
         table->buckets[i] = NULL;
     }
     return table;
-}
 
 // ChatGPT Implementation
 void insert(HashTable *table, char *key, char *value) {
-    unsigned int computed_hash = hash_function(key); // compute the hash for the key of the key:value you want to store in the hashtable
-    HashNode *node = malloc(sizeof(HashNode)); // create a new node
-    node->key = key; // assign the new node a key
-    node->value = value; // assign the new node a value
-    node->next_node = table->buckets[computed_hash]; // assign the new node's next_node value to the value of the table's node at that index
-                                                     // by default this will be NULL, if it exists, create a linked list DS connecting the 
-                                                     // existing value at that index with the newly computed hash of the new node.
-    table->buckets[computed_hash] = node; // 
+    unsigned int computed_hash = hash_function(key);
+    HashNode *node = malloc(sizeof(HashNode));
+    node->key = key;
+    node->value = value;
+    node->next_node = table->buckets[computed_hash];
+    table->buckets[computed_hash] = node;  
 }
 
 // Implemented this without looking at GPT LFG🚀🚀
