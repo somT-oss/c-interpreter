@@ -37,7 +37,6 @@ HashTable *create_hashtable() {
     return table;
 }
 
-// ChatGPT Implementation
 void insert(HashTable *table, char *key, char *value) {
     unsigned int index = hash_function(key); // compute the hash for the key of the key:value you want to store in the hashtable
     HashNode *existing_node = table->buckets[index];
