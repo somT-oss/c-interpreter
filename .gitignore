@@ -1,3 +1,5 @@
 lexer
 token
 hash_table
+test.c
+test
