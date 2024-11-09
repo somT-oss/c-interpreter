@@ -95,7 +95,7 @@ void delete(HashTable *table,char *key) {
     free(node);
 }
 
-
+// Implemented this without looking at GPT LFG🚀🚀
 void delete_table(HashTable *table) { 
     for (int index = 0; index < HASHTABLE_SIZE; index ++) {
         HashNode *node = table->buckets[index];
