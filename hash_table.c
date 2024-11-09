@@ -144,6 +144,22 @@ void delete(HashTable *table,char *key) {
     free(node);
 }
 
+// Wrote this by myself without GPT, LFG🚀🚀
+void delete_table(HashTable *table) { 
+    for (int index = 0; index < HASHTABLE_SIZE; index ++) {
+        HashNode *node = table->buckets[index];
+        while (node != NULL) {
+            HashNode *temp = node;
+            node = node->next_node;
+            free(temp->key);
+            free(temp);
+        }    
+    }
+    free(table->buckets);
+    free(table);
+    printf("Deleted hashtable\n");
+}
+
 
 void print_hashtable(HashTable *table) {
     for (int i = 0; i < HASHTABLE_SIZE; i ++) { // loop through the size of the hashtable
@@ -167,5 +183,7 @@ int main() {
     insert(my_hashtable, "chibueze", "9"); // insert the values {"chibueze": "9"}
     insert(my_hashtable, "chibueze", "9"); // insert the values {"chibueze": "9"}
     delete(my_hashtable, "chibueze");
-    print_hashtable(my_hashtable);
+    delete(my_hashtable, "somto");
+    // print_hashtable(my_hashtable);
+    delete_table(my_hashtable);
 }
