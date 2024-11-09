@@ -64,7 +64,8 @@ int search(HashTable *table, char *key) {
 
 
 // Implemented this without looking at GPT LFG🚀🚀
-int delete(HashTable *table, char *key) {
+// This is dogshit and is full of errors
+/* int delete(HashTable *table, char *key) {
     unsigned int index = hash_function(key);
     HashNode *node = table->buckets[index];
 
@@ -79,6 +80,13 @@ int delete(HashTable *table, char *key) {
         return 0;
     }
 }
+*/
+
+int delete(HashTable *table, char *key) {
+    
+}
+
+
 
 int main() {
     printf("This is my custom implementation of a hashtable\n");
