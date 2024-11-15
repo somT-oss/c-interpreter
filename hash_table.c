@@ -33,10 +33,6 @@ HashTable *create_hashtable() {
 
 // modified ChatGPT Implementation
 void insert(HashTable *table, char *key, char *value) {
-    if (table == NULL || key == NULL || value == NULL) {
-        fprintf(stderr, "Error: NULL argument passed to insert().\n");
-        return;
-    }
     unsigned int index = hash_function(key); // compute the hash for the key of the key:value you want to store in the hashtable
     HashNode *existing_node = table->buckets[index];
 
