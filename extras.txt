@@ -1,0 +1,59 @@
+    HashTable *hashtable = create_hashtable();
+    TokenType keyword = "let";
+    TokenType var = "x";
+    TokenType assign = "=";
+    TokenType integer = "5";
+    TokenType plus = "+";
+    TokenType end_of_file = "";
+
+    Token KEYWORD = {
+        keyword,
+        "let"
+    };
+    Token VAR = {
+        var,
+        "x"
+    };
+    Token ASSIGN = {
+        assign,
+        "="
+    };
+    Token INT = {
+        integer,
+        "5"
+    };
+    Token PLUS = {
+        plus,
+        "+"
+    };
+    Token END_OF_FILE = {
+        integer,
+        ""
+    };
+
+    Token token_list[] = {
+        KEYWORD, VAR, ASSIGN, INT, PLUS, END_OF_FILE
+    };
+
+    for (int i = 0; i < 6; i++) {
+        insert(hashtable, token_list[i].TokenType, token_list[i].literal);
+    }
+
+GOTTEN FROM main function during checking of token_types
+---------------------------------------------------------------------------
+
+    TokenType keyword_func = "function";
+    TokenType keyword_let = "letter";
+
+    Token func = {
+        keyword_func, 
+        "func"
+    };
+
+    Token let = {
+        keyword_let,
+        "let"
+    };
+
+    Token tokens[] = {func, let};
+    int tokens_length = (int)(sizeof(tokens)/sizeof(tokens[0]));

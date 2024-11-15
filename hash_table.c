@@ -3,19 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include "hash_table.h"
 
 const int HASHTABLE_SIZE = 10;
-
-typedef struct HashNode {
-    char *key; 
-    char *value;
-    struct HashNode *next_node; // Handle collisions
-} HashNode;
-
-typedef struct HashTable {
-    HashNode **buckets; // pointer to a pointer to a HashNode struct
-} HashTable;
-
 
 unsigned int hash_function(char *key) {
     unsigned int hash = 0;
@@ -30,6 +20,10 @@ unsigned int hash_function(char *key) {
 
 HashTable *create_hashtable() {
     HashTable *table = malloc(sizeof(HashTable));
+    if (!table) {
+        printf("Failed to allocate memory");
+        exit(1);
+    }
     table->buckets = malloc(sizeof(HashNode*) * HASHTABLE_SIZE);
     for (int i = 0; i < HASHTABLE_SIZE; i++) {
         table->buckets[i] = NULL;
@@ -39,6 +33,10 @@ HashTable *create_hashtable() {
 
 // modified ChatGPT Implementation
 void insert(HashTable *table, char *key, char *value) {
+    if (table == NULL || key == NULL || value == NULL) {
+        fprintf(stderr, "Error: NULL argument passed to insert().\n");
+        return;
+    }
     unsigned int index = hash_function(key); // compute the hash for the key of the key:value you want to store in the hashtable
     HashNode *existing_node = table->buckets[index];
 

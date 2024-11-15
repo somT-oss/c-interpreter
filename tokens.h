@@ -4,7 +4,7 @@
 typedef char* TokenType;
 
 typedef struct {
-    char *TokenType; 
+    char *type; 
     char *literal;
 } Token;
 
