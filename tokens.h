@@ -8,4 +8,7 @@ typedef struct {
     char *literal;
 } Token;
 
+void create_keyword_values();
+void create_keyword_keys();
+
 #endif

@@ -1,12 +1,11 @@
 #include "hash_table.h"
-#include "tokens.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-char input[] = "let x = 5 + 5";
+char input[] = "let new_name == 5 + 5 ";
 int input_length = (int)(sizeof(input)/sizeof(input[0]));
 
 typedef struct {
@@ -15,6 +14,27 @@ typedef struct {
     int readPosition;
     char character;
 }  Lexer;
+
+char *KEYWORD_VALUES[] = {
+    "FUNCTION",
+    "LET",
+    "TRUE",
+    "FALSE",
+    "IF",
+    "ELSE",
+    "RETURN",
+}; 
+
+char *KEYWORD_KEYS[] = {
+    "fn",
+    "let",
+    "true",
+    "false",
+    "if",
+    "else",
+    "return"
+};
+
 
 void readChar(Lexer *lexer) {
     // printf("%d\n", (int)(sizeof(&lexer->input)));
@@ -29,19 +49,54 @@ void readChar(Lexer *lexer) {
 ; // Move the character position to be read one step further
 }  
 
+char peekChar(Lexer *lexer) {
+    if (lexer->readPosition >= input_length) {
+        return 1;
+    } else {
+        return lexer->input[lexer->readPosition];
+    }
+} 
 
-void nextToken(Lexer lexer) {
+
+void nextToken(Lexer lexer, HashTable *hashtable) {
     int iterator = 0;
     int token_buffer_size = 1;
-    char *token_buffer;
+    char *token_buffer = malloc(token_buffer_size);
     char *token;
     int token_counter = 0;
 
     while (iterator <= input_length) { 
         readChar(&lexer);
-        if (isspace(lexer.character) || lexer.character == '\0' ) { 
+
+        if (isspace(lexer.character) || lexer.character == '\t' || lexer.character == '\n' || lexer.character == '\r') { 
             token_buffer[token_counter] = '\0'; 
             token_counter = 0;  
+
+            // printf("%s\n", token_buffer);
+            if (strcmp(token_buffer, "=") == 0) {
+                printf("I am here");
+                // if (peekChar(&lexer) == '=') {
+                //     printf("{Type:%s Literal:%s} \n", "==", "==");
+                // }  else {
+                //     printf("{Type:%c Literal:%c} \n", lexer.character, lexer.character);
+                // }
+            }
+
+            else if (strcmp(token_buffer, "!") == 0) {
+                printf("I am here");
+                // if (peekChar(&lexer) == '=') {
+                //     printf("{Type:%s Literal:%s} \n", "!=", "==");
+                // } else {
+                //     printf("{Type:%c Literal:%c} \n", lexer.character, lexer.character);
+                // }
+            }
+
+            else if (search(hashtable, token_buffer) == 0) {
+                printf("{Type:%s Literal:%s} \n", token_buffer, token_buffer);
+            } 
+            else {
+                printf("{Type:%s Literal:%s} \n", "IDENT", token_buffer);
+            }
         }
         else { 
                 if (token_counter >= token_buffer_size - 1) { 
@@ -63,14 +118,17 @@ void nextToken(Lexer lexer) {
 }
 
 int main() {
+    HashTable *keywords = create_hashtable();
+    int keyword_keys_length = (int)(sizeof(KEYWORD_KEYS)/sizeof(KEYWORD_KEYS[0]));
+    int keyword_values_length = (int)(sizeof(KEYWORD_VALUES)/sizeof(KEYWORD_VALUES[0]));
 
-    printf("Creating hashtable\n");
-    HashTable *identifierHashTable = create_hashtable();
-    
-    insert(identifierHashTable, "key", "value");
-    // insert(identifierHashtable, "chibu", "23");
-    // insert(identifierHashtable, fruits[1], fruits[2]);
-
+    if (keyword_keys_length != keyword_values_length) {
+        printf("HashTable Keys and Values don't match");
+        return 1;
+    }
+    for (int i = 0; i < keyword_keys_length; i++) {
+        insert(keywords, KEYWORD_KEYS[i], KEYWORD_VALUES[i]);
+    }
 
     Lexer lexer = {
      input,
@@ -78,8 +136,6 @@ int main() {
       0
     };
     
-    nextToken(lexer);
-
-    // print_hashtable(identifierHashtable);
-    delete_table(identifierHashTable);
+    nextToken(lexer, keywords);
+    delete_table(keywords);
 }

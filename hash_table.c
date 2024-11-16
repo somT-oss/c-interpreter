@@ -54,14 +54,16 @@ void insert(HashTable *table, char *key, char *value) {
 // Implemented this without looking at GPT LFG🚀🚀
 int search(HashTable *table, char *key) {
     unsigned int index = hash_function(key);
+    // printf("hash of %d is ", index);
     HashNode *node = table->buckets[index];
     
     if (!node) {
-        printf("key %s not found \n", key);
+        // printf("key %s not found \n", key);
         return 1;
     } else {
-        printf("found key at index %d\n", index);
-        printf("{%s:%s} \n", node->key, node->value);
+        if(strcmp(node->key, key) != 0) {
+            return 1;
+        } 
         return 0;
     }
 }
@@ -96,7 +98,7 @@ void delete_table(HashTable *table) {
         while (node != NULL) {
             HashNode *temp = node;
             node = node->next_node;
-            free(temp->key);
+            // free(temp->key);
             free(temp);
         }    
     }
