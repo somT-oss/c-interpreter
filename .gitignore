@@ -3,3 +3,5 @@ token
 hash_table
 test.c
 test
+.vscode/launch.json
+lexer.out

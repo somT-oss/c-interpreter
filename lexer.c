@@ -7,7 +7,7 @@
 #include <string.h>
 
 HashTable *KEYWORDS = NULL;
-char input[] = "if (name == true)";
+char input[] = "let 20 >= 12";
 int input_length = (int)(sizeof(input)/sizeof(input[0]));
 
 typedef struct {
@@ -47,9 +47,13 @@ void readChar(Lexer *lexer) {
         lexer->character = lexer->input[lexer->readPosition]; // Else, update character to the value of the current character read in the input string
     }
     lexer->position = lexer->readPosition; // Updated the position
-    lexer->readPosition += 1
-; // Move the character position to be read one step further
+    lexer->readPosition += 1; // Move the character position to be read one step further
 }  
+
+void track_back(Lexer *lexer) {
+    lexer->readPosition -= 1;
+    lexer->position = lexer->readPosition - 1; 
+}
 
 void create_keywords() {
     KEYWORDS = create_hashtable();
@@ -156,12 +160,13 @@ Token nextToken(Lexer *lexer) {
     
     skipWhiteSpace(lexer);
     
-    char literal[2] = {lexer->character, '\0'};
+    char literal[2] = {lexer->character};
+    // printf("%s\n", literal);
     switch (lexer->character) {
         default:
             if (isLetter(lexer->character)) {
                 token.literal = readIdentifier(lexer);
-                token.type = "KEYWORD";
+                track_back(lexer);
                 if (search(KEYWORDS, token.literal) == 0) {
                     token.type = get_key(KEYWORDS, token.literal);
                 } else {
@@ -171,8 +176,6 @@ Token nextToken(Lexer *lexer) {
             else if (isdigit(lexer->character)) {
                 token.type = "INT";
                 token.literal = readNumber(lexer);
-            } else {
-                token = newToken(token.literal, token.literal);
             }
             break;
         case '=':
@@ -197,9 +200,42 @@ Token nextToken(Lexer *lexer) {
                 token = newToken("BANG", literal);
             }
             break;
-        
+        case '>':
+            if (peekChar(lexer) == '=') {
+                readChar(lexer);
+                Token EQ_TOKEN = {
+                    "GREATER_THAN_OR_EQUALS_TO",
+                    ">="
+                }; 
+            } else {
+                token = newToken("GREATER_THAN", literal);
+            }
+            break;
+        case '<':
+            if (peekChar(lexer) == '=') {
+                readChar(lexer);
+                Token EQ_TOKEN = {
+                    "LESS_THAN_OR_EQUALS_TO",
+                    "<="
+                }; 
+            } else {
+                token = newToken("LESS_THAN", literal);
+            }
+            break;
         case ';':
             token = newToken("SEMICOLON", literal);
+            break;
+        case '+':
+            token = newToken("PLUS", literal);
+            break;
+        case '-':
+            token = newToken("MINUS", literal);
+            break;
+        case '*':
+            token = newToken("MULTIPLICATION", literal);
+            break;
+        case '/':
+            token = newToken("DIVISION", literal);
             break;
         case '(':
             token = newToken("LPAREN", literal);
@@ -212,6 +248,9 @@ Token nextToken(Lexer *lexer) {
             break;
         case '}':
             token = newToken("RBRACE", literal);
+            break;
+        case ',':
+            token = newToken("COMMA", literal);
             break;
         case 0:
             token = newToken("EOF", "");
@@ -237,11 +276,13 @@ int main() {
 
     readChar(&lexer);
     Token token;
+    
     do {
         token = nextToken(&lexer);
         printf("Type: %s, Literal: %s\n", token.type, token.literal);
 
     } while (strcmp(token.type, "EOF") != 0);
 
+    
     return 0;
 }
