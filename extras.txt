@@ -57,3 +57,61 @@ GOTTEN FROM main function during checking of token_types
 
     Token tokens[] = {func, let};
     int tokens_length = (int)(sizeof(tokens)/sizeof(tokens[0]));
+
+
+----------------------------------------------------------------------------
+
+        case '=':
+            if (peekChar(lexer) == '=') {
+                readChar(lexer);
+                Token token = {
+                    "EQUALS",
+                    "=="
+                }; 
+            } else {
+                token = newToken("ASSIGN", &lexer->character);
+            }
+        case '!':
+            if (peekChar(lexer) == '=') {
+                readChar(lexer);
+                Token token = {
+                    "NOT EQUALS",
+                    "!="
+                }; 
+            } else {
+                token = newToken("BANG", &lexer->character);
+            }
+            printf("%s, %s", token.type, token.literal);
+
+-------------------------------------------------------------------------------
+default:
+            if (isLetter(lexer->character)) {
+                token.literal = readIdentifier(lexer);
+                if (search(KEYWORDS, token.literal) == 0) {
+                    token.type = get_key(KEYWORDS, token.literal);
+                } 
+                else if (isdigit(lexer->character) == 0) {
+                    token.type = "INT";
+                    token.literal = readNumber(lexer); 
+                }
+            } else {
+                token = newToken("EOF", &lexer->character);
+            }
+
+----------------------------------------------------------------------------------
+
+    if (lexer->character == '=') {
+        token = newToken("ASSIGN", &lexer->character);
+    } else if (lexer->character == ';') {
+        token = newToken("SEMICOLON", &lexer->character);
+    } else if (lexer->character == '(') {
+        token = newToken("LBRACE", &lexer->character);
+    } else if (lexer->character == ')') {
+        token = newToken("RBRACE", &lexer->character);
+    } else if (lexer->character == '{') {
+        token = newToken("RPAREN", &lexer->character);
+    } else if (lexer->character == '}') {
+        token = newToken("LPAREN", &lexer->character);
+    } else {
+        token = newToken("EOF", &lexer->character);
+    }

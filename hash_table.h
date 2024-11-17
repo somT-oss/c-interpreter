@@ -26,8 +26,10 @@ HashTable *create_hashtable();
 void insert(HashTable *table, char *key, char *value);
 // Implemented this without looking at GPT LFG🚀🚀
 int search(HashTable *table, char *key);
+char *get_key(HashTable *table, char *key);
 void delete_key(HashTable *table, char *key);
 void print_hashtable(HashTable *table);
 void delete_table(HashTable *table);
+
 
 #endif

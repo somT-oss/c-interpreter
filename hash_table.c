@@ -10,8 +10,9 @@ const int HASHTABLE_SIZE = 10;
 unsigned int hash_function(char *key) {
     unsigned int hash = 0;
     int i = 0;
+    unsigned int prime = 31;
     while (key[i] != '\0'){
-        hash = hash * 100 + key[i];
+        hash = (hash * prime) + key[i];
         i ++;
     }
     i = 0;
@@ -57,15 +58,31 @@ int search(HashTable *table, char *key) {
     // printf("hash of %d is ", index);
     HashNode *node = table->buckets[index];
     
-    if (!node) {
-        // printf("key %s not found \n", key);
-        return 1;
-    } else {
+    if (node != NULL) {
         if(strcmp(node->key, key) != 0) {
             return 1;
         } 
         return 0;
+        
+    } else {
+        return 1;
     }
+}
+
+
+char *get_key(HashTable *table, char *key) {
+    if (!table) {
+        printf("Invalid table");
+        return NULL;
+    } 
+    unsigned int hash = hash_function(key);
+    HashNode *node = table->buckets[hash];
+
+    if (!node) {
+        printf("NULL node");
+        return NULL;
+    } 
+    return node->key;
 }
 
 void delete(HashTable *table,char *key) {
