@@ -1,14 +1,8 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
-// #include <cstddef>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <strings.h>
 
 // #define HASHTABLE_SIZE 10;
-
 typedef struct HashNode {
     char *key; 
     char *value;

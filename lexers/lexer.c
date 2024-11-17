@@ -1,6 +1,6 @@
-#include "hash_table.h"
+#include "../hashtable/hash_table.h"
+#include "../tokens/token.h"
 #include "stdbool.h"
-#include "tokens.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
