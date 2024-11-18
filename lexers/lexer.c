@@ -1,5 +1,6 @@
 #include "../hashtable/hash_table.h"
 #include "../tokens/token.h"
+#include "lexer.h"
 #include "stdbool.h"
 #include <ctype.h>
 #include <stdio.h>
@@ -7,8 +8,7 @@
 #include <string.h>
 
 HashTable *KEYWORDS = NULL;
-char input[] = "let 20 >= 12";
-int input_length = (int)(sizeof(input)/sizeof(input[0]));
+
 
 typedef struct {
     char *input;
@@ -36,6 +36,7 @@ char *KEYWORD_KEYS[] = {
     "else",
     "return"
 };
+
 
 
 void readChar(Lexer *lexer) {
@@ -161,7 +162,6 @@ Token nextToken(Lexer *lexer) {
     skipWhiteSpace(lexer);
     
     char literal[2] = {lexer->character};
-    // printf("%s\n", literal);
     switch (lexer->character) {
         default:
             if (isLetter(lexer->character)) {
@@ -176,6 +176,7 @@ Token nextToken(Lexer *lexer) {
             else if (isdigit(lexer->character)) {
                 token.type = "INT";
                 token.literal = readNumber(lexer);
+                track_back(lexer);
             }
             break;
         case '=':
@@ -262,14 +263,12 @@ Token nextToken(Lexer *lexer) {
 
 }
 
-int main() {
-
+void initiate_lexer() {
     Lexer lexer = {
      input,
       0,
       0
     };
-    printf("%s\n", input);
 
     create_keywords();
     add_all_keys_and_values();
@@ -283,6 +282,4 @@ int main() {
 
     } while (strcmp(token.type, "EOF") != 0);
 
-    
-    return 0;
 }
