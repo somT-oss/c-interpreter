@@ -2,6 +2,7 @@
 #define PARSER_H
 #include "../tokens/token.h"
 #include "../lexers/lexer.h"
+#include "../ast/ast.h"
 
 
 typedef struct Parser {
@@ -10,5 +11,7 @@ typedef struct Parser {
     Token peekToken;
 } Parser;
 
+void parseNextToken(Parser *parser);
+Program *parseProgram(Parser *parser);
 
 #endif
