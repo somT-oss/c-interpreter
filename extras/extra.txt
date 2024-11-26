@@ -115,3 +115,37 @@ default:
     } else {
         token = newToken("EOF", &lexer->character);
     }
+
+-------------------------------------------------------------------------------------
+PARSER nodes
+
+typedef struct {
+    Node node;
+    Node statementNode;
+} Statement;
+
+
+typedef struct {
+    Node node;
+    Node expressionNode;
+} Expression;
+
+
+typedef struct {
+    Statement *statements;
+} Program;
+
+typedef struct {
+
+} Identifier;
+
+typedef struct {
+    Token token;
+    Identifier name;
+    char *expression;
+} LetStatement;
+
+char *getTokenLiteral(Program *program) {
+    int program_statment_length = sizeof(program->&statements)/sizeof(program->statements[0]);
+    if ()
+}

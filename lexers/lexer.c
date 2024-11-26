@@ -9,14 +9,6 @@
 
 HashTable *KEYWORDS = NULL;
 
-
-typedef struct {
-    char *input;
-    int position;
-    int readPosition;
-    char character;
-}  Lexer;
-
 char *KEYWORD_VALUES[] = {
     "FUNCTION",
     "LET",
@@ -36,7 +28,6 @@ char *KEYWORD_KEYS[] = {
     "else",
     "return"
 };
-
 
 
 void readChar(Lexer *lexer) {
